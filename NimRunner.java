@@ -45,7 +45,24 @@ public class NimRunner {
     }
 
     public static int minimax(int state, boolean myTurn){
+        // base case: state = 0
+        if (state == 0){
+            // if it is my turn and the state 
+            if (myTurn){
+                return 1;
+            }
+            else{
+                return -1;
+            }
+        }
+        else{
+            for (int i = 0; i < 3; i++){
+                if (state - i >= 0){
+                    int state = minimax(state - i);
+                }
+            }
+        }
         // get possible states
-        return 0;
+        return state; 
     }
 }
