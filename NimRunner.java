@@ -6,6 +6,7 @@ public class NimRunner {
     // return true if player X won, false if player Y won
     public static void main (String [] args){
         System.out.println(runGame());
+
     }
 
     public static boolean runGame(){
@@ -28,41 +29,63 @@ public class NimRunner {
 
     // figure out where X will move
     public static int getXMove(int state){
+        int chosenInt;
         while(chosenInt > state){
-            int chosenInt = Math.floor(Math.random() *(3 - 1 + 1) + 1);
+            chosenInt = (int) Math.floor(Math.random() *(3 - 1 + 1) + 1);
         }
         return state - chosenInt;
     }
 
     // figure out where Y will move
     public static int getYMove(int state){
-        public static int getXMove(int state){
+        int chosenInt;
         while(chosenInt > state){
-            int chosenInt = Math.floor(Math.random() *(3 - 1 + 1) + 1);
+            chosenInt = (int) Math.floor(Math.random() *(3 - 1 + 1) + 1);
         }
         return state - chosenInt;
-    }
     }
 
     public static int minimax(int state, boolean myTurn){
         // base case: state = 0
         if (state == 0){
-            // if it is my turn and the state 
+            // if it is my turn and the state is 0, I win
             if (myTurn){
                 return 1;
             }
             else{
-                return -1;
+                return -1; // if it is my turn and the state is -1, I lose
             }
         }
         else{
-            for (int i = 0; i < 3; i++){
+            ArrayList <Integer> listOfScores = new ArrayList <> ();
+            for(int i = 0; i < 3; i++){
                 if (state - i >= 0){
-                    int state = minimax(state - i);
+                    listOfScores.add(minimax(state - i , !myTurn));
                 }
             }
+            if (myTurn){
+                return listOfScores.max();
+            }
+            else{
+                return listOfScores.min();
+            }
         }
-        // get possible states
-        return state; 
     }
+// if minimax - piecesTaken > 0 , return high 
+    
+    // call minimax three times in your recursive step, if you hit -1, return the minimum 
+    // make an array list, go through three possible state, 1 and -1 will be returned, 
+
+    /* new minimax code 
+    - have to call minimax recursively on all three states, that will give you three numbers, 
+    - in order to know what time state is, you had to calll minimax recursively on the above state, have to call it 
+    until you get to the base case 
+    
+    BEST MOVE: return the move the pieces taken)
+    - check every possible move
+    - for every possible move, check what it owould be 
+    - callll minimax on the next state
+    - return the number of pieces taken, just steal 3 or something 
+    */
+
 }
