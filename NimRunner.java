@@ -5,7 +5,7 @@ public class NimRunner {
     // method to run the game
     // return true if player X won, false if player Y won
     public static void main (String [] args){
-        System.out.println(runGame());
+        System.out.println(bestMove(1, true));
 
     }
 
@@ -73,34 +73,6 @@ public class NimRunner {
             }
         }
     }
-    /* 
-    public static int minimax(int state, boolean myTurn){
-        // base case: state = 0
-        if (state == 0){
-            // if it is my turn and the state is 0, I win
-            if (myTurn){
-                return 1;
-            }
-            else{
-                return -1; // if it is my turn and the state is -1, I lose
-            }
-        }
-        else{
-            ArrayList <Integer> listOfScores = new ArrayList <> ();
-            for(int i = 0; i < 3; i++){
-                if (state - i >= 0){
-                    listOfScores.add(minimax(state - i , !myTurn));
-                }
-            }
-            if (myTurn){
-                return Collections.max(listOfScores);
-            }
-            else{
-                return Collections.min(listOfScores);
-            }
-        }
-    }
-    */ 
 // if minimax - piecesTaken > 0 , return high 
     
     // call minimax three times in your recursive step, if you hit -1, return the minimum 
@@ -111,6 +83,28 @@ public class NimRunner {
     - in order to know what time state is, you had to calll minimax recursively on the above state, have to call it 
     until you get to the base case 
     
+*/ 
+    // Best Move Function: 
+    public static int bestMove(int state, boolean myTurn){
+        for(int i = 1; i <= 3; i++){ // loop through all of the possible moves (taking 1, 2, or 3)
+            if (state - i >= 0 && myTurn){
+                if (minimax(state - i, !myTurn) == 1){ // have to make the boolean condition for minimax !myTurn rather than myTurn because once I take these pieces, it will become the other player's turn
+                    return i; // if taking i pieces results in 1 being returned, immediately return it becasue that means you will automatically win
+                }
+            }
+            // finding the best move for the other player (they will want it to return -1)
+            else if(state - i >= 0 && !myTurn){
+                if (minimax(state - i, myTurn) == -1){
+                    return i; // if taking i pieces results in -1 being returned, immediatley return i bceasue you win
+                }
+            }
+        }
+        return 0;
+    }
+
+
+/*
+
     BEST MOVE: return the move the pieces taken)
     - check every possible move
     - for every possible move, check what it owould be 
