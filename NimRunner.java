@@ -1,48 +1,44 @@
 import java.util.*;
 import java.io.*;
 public class NimRunner {
-    // instance variables of class
-    // method to run the game
-    // return true if player X won, false if player Y won
+
     public static void main (String [] args){
-        System.out.println(bestMove(1, true));
+        System.out.println(runGame());
+
 
     }
-
+    // function that actually runs game/ simulates real game play
     public static boolean runGame(){
-        boolean isXTurn = true;
-        int state = (int) Math.floor(Math.random() *(15 - 1 + 1) + 1); // generatinga  random state
+        boolean isXTurn = false;
+        int state = 2;
         while(state >= 1){
             if (isXTurn){
                 // updating state to subtract the correct number of objects
                 state = getXMove(state);
+                System.out.println("NEW STATE:" + state);
 
             }
             else {
                 // 
-                state = getYMove(state);
+                state = getYMove(state); 
+                System.out.println("In y move, state after y moves" + state);
             }
             isXTurn = !isXTurn;
         }
-        return isXTurn;
+        if (state == 0 && isXTurn){
+            return true;
+        }
+        return false;
     }
 
-    // figure out where X will move
+    // figure out where X will move, I am player X 
     public static int getXMove(int state){
-        int chosenInt = 0;
-        while(chosenInt > state){
-            chosenInt = (int) Math.floor(Math.random() *(3 - 1 + 1) + 1);
-        }
-        return state - chosenInt;
+        return state - bestMove(state, true);
     }
 
     // figure out where Y will move
     public static int getYMove(int state){
-        int chosenInt = 0;
-        while(chosenInt > state){
-            chosenInt = (int) Math.floor(Math.random() *(3 - 1 + 1) + 1);
-        }
-        return state - chosenInt;
+        return state - bestMove(state, true);
     }
 
     // NEW MINIMAX FUNCTION
@@ -68,22 +64,13 @@ public class NimRunner {
             if(myTurn){
                 return Collections.max(listOfScores); // if it is your turn, you want the max of the list to be returned
             }
-            else{ // if it's not your turn, you want the min of the list to be returned
+            else if(!myTurn){ // if it's not your turn, you want the min of the list to be returned
+                System.out.println("in minimax station");
                 return Collections.min(listOfScores);
             }
         }
+        return 10000; 
     }
-// if minimax - piecesTaken > 0 , return high 
-    
-    // call minimax three times in your recursive step, if you hit -1, return the minimum 
-    // make an array list, go through three possible state, 1 and -1 will be returned, 
-
-    /* new minimax code 
-    - have to call minimax recursively on all three states, that will give you three numbers, 
-    - in order to know what time state is, you had to calll minimax recursively on the above state, have to call it 
-    until you get to the base case 
-    
-*/ 
     // Best Move Function: 
     public static int bestMove(int state, boolean myTurn){
         for(int i = 1; i <= 3; i++){ // loop through all of the possible moves (taking 1, 2, or 3)
@@ -94,12 +81,13 @@ public class NimRunner {
             }
             // finding the best move for the other player (they will want it to return -1)
             else if(state - i >= 0 && !myTurn){
-                if (minimax(state - i, myTurn) == -1){
+                if (minimax(state - i, myTurn) == 1){
+                    System.out.println("when Y takes they take: " + i + "pieces");
                     return i; // if taking i pieces results in -1 being returned, immediatley return i bceasue you win
                 }
             }
         }
-        return 0;
+        return 1;
     }
 
 
@@ -111,5 +99,17 @@ public class NimRunner {
     - callll minimax on the next state
     - return the number of pieces taken, just steal 3 or something 
     */
+
+    // if minimax - piecesTaken > 0 , return high 
+    
+    // call minimax three times in your recursive step, if you hit -1, return the minimum 
+    // make an array list, go through three possible state, 1 and -1 will be returned, 
+
+    /* new minimax code 
+    - have to call minimax recursively on all three states, that will give you three numbers, 
+    - in order to know what time state is, you had to calll minimax recursively on the above state, have to call it 
+    until you get to the base case 
+    
+*/ 
 
 }
