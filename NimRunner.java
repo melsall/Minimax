@@ -10,6 +10,18 @@ public class NimRunner {
     // function that actually runs game/ simulates real game play
     public static boolean runGame(){
         boolean isXTurn = false;
+        // make state a 2D array?
+        ArrayList <Integer> states = new ArrayList <> ();
+        states.add(1);
+        states.add(1);
+
+        // Tracking total objects in the arrayList
+        int totalObjects = 0;
+        for (int r = 0; r < states.size(); r++){
+            totalObjects = totalObjects + states.get(r);
+            }
+
+            // can take from one pile at a time, so iterate through each pile, see moves
         int state = 2;
         while(state >= 1){
             if (isXTurn){
@@ -19,7 +31,6 @@ public class NimRunner {
 
             }
             else {
-                // 
                 state = getYMove(state); 
                 System.out.println("In y move, state after y moves" + state);
             }
@@ -29,6 +40,13 @@ public class NimRunner {
             return true;
         }
         return false;
+    }
+
+    // function to return the total amount of objects in a game with multiple piles
+    public static int getTotalObjects(ArrayList <Integer> states){
+        for(int r = 0; r < states.size(); r++){2
+
+        }
     }
 
     // figure out where X will move, I am player X 
@@ -41,7 +59,7 @@ public class NimRunner {
         return state - bestMove(state, true);
     }
 
-    // NEW MINIMAX FUNCTION
+    // Minimax Function
     public static int minimax(int state, boolean myTurn){
         //base case (state = 0)
         if (state == 0){
@@ -71,6 +89,15 @@ public class NimRunner {
         }
         return 10000; 
     }
+    // helper function to see if it is the base case for minimax, returns true if it is the base case
+    public static boolean isBaseCase(ArrayList <Integer> states){
+        for(int i = 0; i < states; i++){
+            if(states.get(i) != 0){
+                return false; // if one of the piles have more than 0 objects, it is not the base case
+            }
+        }
+        return true; // if you have iterated through the whole for loop and all of the piles have 0, it is the base case
+    }
     // Best Move Function: 
     public static int bestMove(int state, boolean myTurn){
         for(int i = 1; i <= 3; i++){ // loop through all of the possible moves (taking 1, 2, or 3)
@@ -79,7 +106,7 @@ public class NimRunner {
                     return i; // if taking i pieces results in 1 being returned, immediately return it becasue that means you will automatically win
                 }
             }
-            // finding the best move for the other player (they will want it to return -1)
+            // finding the best move for the other player
             else if(state - i >= 0 && !myTurn){
                 if (minimax(state - i, myTurn) == 1){
                     System.out.println("when Y takes they take: " + i + "pieces");
