@@ -5,9 +5,10 @@ public class NimRunner {
     public static void main (String [] args){
         System.out.println(makeRandomStates());
         ArrayList <Integer> rands = new ArrayList <> ();
-        rands.add(1);
-        rands.add(1);
-        System.out.println(minimax(rands, false));
+        rands.add(3);
+        rands.add(5);
+        rands.add(7);
+        System.out.println(minimax(rands, true));
     }
     // // // function that actually runs game/ simulates real game play
     // public static boolean runGame(){
@@ -100,6 +101,7 @@ public class NimRunner {
                 }
             }
         }
+        // honestly I'm confused on why this would even work
         if (myTurn){
             return -1;
         }
@@ -114,24 +116,28 @@ public class NimRunner {
         }
         return true; // if you have iterated through the whole for loop and all of the piles have 0, it is the base case
     }
-    // // // Best Move Function: 
-    // public static int bestMove(int state, boolean myTurn){
-    //     for(int i = 1; i <= 3; i++){ // loop through all of the possible moves (taking 1, 2, or 3)
-    //         if (state - i >= 0 && myTurn){
-    //             if (minimax(state - i, !myTurn) == 1){ // have to make the boolean condition for minimax !myTurn rather than myTurn because once I take these pieces, it will become the other player's turn
-    //                 return i; // if taking i pieces results in 1 being returned, immediately return it becasue that means you will automatically win
-    //             }
-    //         }
-    //         // finding the best move for the other player
-    //         else if(state - i >= 0 && !myTurn){
-    //             if (minimax(state - i, myTurn) == 1){
-    //                 System.out.println("when Y takes they take: " + i + "pieces");
-    //                 return i; // if taking i pieces results in -1 being returned, immediatley return i bceasue you win
-    //             }
-    //         }
-    //     }
-    //     return 1;
-    // }
+    // // Best Move Function: 
+    public static ArrayList <Integer> bestMove(ArrayList <Integer> states, boolean myTurn){
+        for(int r = 0; r < states.size(); r++){ // loop through all of the possible moves
+            for(int c = 1; c <= states.get(r); c++){
+                ArrayList <Integer> currentPiles = new ArrayList <Integer> (states);
+                currentPiles.set(r, currentPiles.get(r) - c); // editing currentpiles to see what happens when you take c pieces
+                if (myTurn){
+                    if (minimax(currentPiles, !myTurn) == 1){ // if you get a 1 at any point, you can just break because it's a favorable path
+                        return currentPiles; // return the new state of the game
+                    }
+                }
+                else{
+                    if (minimax(currentPiles, !myTurn) == -1){
+                        return currentPiles;
+                    }
+                }
+            }
+        }
+        ArrayList <Integer> rat = new ArrayList <>();
+        rat.add(1);
+        return rat;
+    }
 
 
 // /*
