@@ -5,10 +5,9 @@ public class NimRunner {
     public static void main (String [] args){
         System.out.println(makeRandomStates());
         ArrayList <Integer> rands = new ArrayList <> ();
-        rands.add(3);
         rands.add(5);
-        rands.add(7);
-        System.out.println(minimax(rands, true));
+        rands.add(1);
+        System.out.println(bestMove(rands, true));
     }
     // // // function that actually runs game/ simulates real game play
     // public static boolean runGame(){
@@ -60,10 +59,11 @@ public class NimRunner {
     //     }
     // }
 
-    // // figure out where X will move, I am player X 
-    // public static int getXMove(int state){
-    //     return state - bestMove(state, true);
-    // }
+    // figure out where X will move, computer is player X so should be ideal move
+        // returns the new state of the board after this move is made
+    public static ArrayList <Integer> getXMove(ArrayList <Integer> states){
+        return bestMove(states, true); // just return whatever the best move would be for the function
+    }
 
     // // figure out where Y will move
     // public static int getYMove(int state){
@@ -116,7 +116,9 @@ public class NimRunner {
         }
         return true; // if you have iterated through the whole for loop and all of the piles have 0, it is the base case
     }
-    // // Best Move Function: 
+    
+    // Best Move Function: 
+    // returns new state of piles after utilizing the best move function
     public static ArrayList <Integer> bestMove(ArrayList <Integer> states, boolean myTurn){
         for(int r = 0; r < states.size(); r++){ // loop through all of the possible moves
             for(int c = 1; c <= states.get(r); c++){
@@ -134,9 +136,7 @@ public class NimRunner {
                 }
             }
         }
-        ArrayList <Integer> rat = new ArrayList <>();
-        rat.add(1);
-        return rat;
+        return states; // don't thinkkk this will ever be reached but not sure
     }
 
 
