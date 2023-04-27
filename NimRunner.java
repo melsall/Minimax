@@ -3,8 +3,6 @@ import java.io.*;
 public class NimRunner {
 
     public static void main (String [] args){
-        ArrayList <Integer> rands = new ArrayList <> ();
-        System.out.println(runGame());
     }
     // // function that actually runs game/ simulates real game play, returns true if the computer won the game
     public static boolean runGame(){
@@ -53,7 +51,6 @@ public class NimRunner {
     // figure out where Y will move
     public static ArrayList <Integer> getYMove(ArrayList <Integer> states){
         boolean isValidMove = false;
-        int yMove = 0;// declaring out here so it can be used throughout the function
         while(!isValidMove){
             Scanner sc = new Scanner(System.in);
             System.out.println("Which pile do you want to take from?");
