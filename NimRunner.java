@@ -5,9 +5,10 @@ public class NimRunner {
     public static void main (String [] args){
         System.out.println(makeRandomStates());
         ArrayList <Integer> rands = new ArrayList <> ();
-        rands.add(5);
         rands.add(1);
-        System.out.println(bestMove(rands, true));
+        rands.add(2);
+        rands = bestMove(rands, true);
+        System.out.println(rands);
     }
     // // // function that actually runs game/ simulates real game play
     // public static boolean runGame(){
@@ -65,10 +66,28 @@ public class NimRunner {
         return bestMove(states, true); // just return whatever the best move would be for the function
     }
 
-    // // figure out where Y will move
-    // public static int getYMove(int state){
-    //     return state - bestMove(state, true);
-    // }
+    // figure out where Y will move
+    public static ArrayList <Integer> getYMove(ArrayList <Integer> states){
+        boolean isValidMove = false;
+        int yMove = 0;// declaring out here so it can be used throughout the function
+        while(!isValidMove){
+            Scanner sc = new Scanner(System.in);
+            System.out.println("Which pile do you want to take from?");
+            int pileTakenFrom = sc.nextInt();
+            if(states.size() >= pileTakenFrom && pileTakenFrom >= 1){ // if it is a valid pile, ask how many objects they want to take and proceed with board
+                System.out.println("Great. How many objects do you want to take?"); // figure out how many objects they want to take
+                int objectsTaken = sc.nextInt();
+                if (objectsTaken <= states.get(pileTakenFrom - 1) && objectsTaken >= 0){ // see if the pile even has that many objects
+                    int originalAmountOfObjects = states.get(pileTakenFrom - 1);
+                    int newAmountOfObjects = originalAmountOfObjects - objectsTaken;
+                    states.set(pileTakenFrom - 1, newAmountOfObjects); // set the state of the board to account for the move
+                    return states; // return new state of the board
+                }
+            }
+            System.out.println("That was not a valid move, please try again."); // if either the pile number or the amount of objects they tried to take was invalid, this will be printed and the loop repeats
+        }
+        return states; // this will never be reached, just so the function doesn't malfunction
+    }
 
     // Minimax Function
     public static int minimax(ArrayList <Integer> states, boolean myTurn){
@@ -103,9 +122,11 @@ public class NimRunner {
         }
         // honestly I'm confused on why this would even work
         if (myTurn){
-            return -1;
+            return -1; // 
         }
-        return 1;
+        else{
+            return 1; // 
+        }
     }
     // helper function to see if it is the base case for minimax, returns true if it is the base case
     public static boolean isBaseCase(ArrayList <Integer> states){
@@ -118,7 +139,7 @@ public class NimRunner {
     }
     
     // Best Move Function: 
-    // returns new state of piles after utilizing the best move function
+    // returns new state of the piles after utilizing the best move function
     public static ArrayList <Integer> bestMove(ArrayList <Integer> states, boolean myTurn){
         for(int r = 0; r < states.size(); r++){ // loop through all of the possible moves
             for(int c = 1; c <= states.get(r); c++){
@@ -136,7 +157,15 @@ public class NimRunner {
                 }
             }
         }
-        return states; // don't thinkkk this will ever be reached but not sure
+        // if you get to this point, there essentially is no "best move" because you can't win, make whatever move is possible and continue
+        for(int i = 0; i < states.size(); i ++){
+            if(states.get(i) != 0){ // if there are pieces in this pile, access the pile
+                int piecesToTake = (int) (Math.random() * states.get(i)) + 1; // randomly choose an amount of pieces to take
+                int originalNumPieces = states.get(i);
+                states.set(i, (originalNumPieces - piecesToTake));
+            }
+        }
+        return states; // return the updates ArrayList of states
     }
 
 
