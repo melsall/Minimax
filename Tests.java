@@ -15,7 +15,7 @@ public class Tests {
         bestMoveTest.add(2);
         System.out.println(NimRunner.minimax(NimRunner.bestMove(bestMoveTest, true), false) == 1); // seeing if after bot makes a move, if the board is favorable to the bot (aka they made a best move)
         
-        // testing if the bot works even if there is no move that would guarantee a win
+        // testing if the bot works even if there is no move that would guarantee a win (edge case)
         ArrayList <Integer> notWinnable = new ArrayList <> ();
         notWinnable.add(2);
         notWinnable.add(2);
@@ -33,6 +33,10 @@ public class Tests {
         tester2.add(2);
         tester2.add(1);
         System.out.println(NimRunner.bestMove(tester2, true).equals(new ArrayList <> (Arrays.asList(0,1)))); // if this is true, the bot recognized to take the pile with 2 pieces was the best move
+
+        // Testing edge case of minimax (empty arrayList), should return 1
+        ArrayList <Integer> empty = new ArrayList <> ();
+        System.out.println(NimRunner.minimax(empty, true) == 1); // if this returns true, minimax works on this edge case
         
         // testing running the game with a person as a player
         System.out.println(NimRunner.runGame()); // if this is true the bot won
