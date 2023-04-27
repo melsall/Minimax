@@ -7,13 +7,27 @@ There is definitely a limit to the size of board game that my algorithm can hand
 
 
 
-2. Will my bot win every possible game of Simple Nim? 
+2. Will my bot win every possible game of Simple Nim?
+
 Sadly, my bot was not able to win every possible name of SimpleNim. Because my bot cannot control the initial state of the board, the initial board could be initialized in an unfavorable way such that my bot simply could not win if the other player makes favorable moves. For instance, if the board was initialized to hold 3 objects, and the human player moved first and took 2 objects, my bot simply could not win.
 
 Furthermore, for the same reasoning, my regular Nim bot cannot win every possible game. For example, the game board could be initialized as [1, 2]. If the other player was moving first and they opted to take the pile of 2 objects, there would be one object left. The Nim bot would be forced to take the single remaining object and lose.
 
+If the human player goes first and moves favorably, there is little my bot can do. 
 
 3. Anti-Nim
+
+In order to switch my Nim game to anti-Nim, I would change the base case in the minimax function. To do this I would negate line 77. Line 77 currently reads:
+
+
+        if (isBaseCase(states))
+
+I would change it to:
+
+
+        if (!isBaseCase(states))
+
+This would cause the function to return 1 if it was NOT the base case and it was player X's turn. The recursive calls of this function would then cause the bot to take the last piece every turn (if possible). With this change, the bot would seek out taking the last piece rather than avoiding the last piece.
 
 4. Non-Nim Game my Algorithm would not work well on: 
  One non-aim game my algorithm my algorithm would not work well on would be chess. Although Nim and chess share certain characteristics such as being zero-sum and alternating player games, that does not mean that Nim algorithm I wrote is applicable to chess. There are 16 pieces per side in chess, and each of those pieces can make many different moves at any given time. Say for simplicity's sake, each piece can make 5 different moves at any given time. My algorithm cannot evaluate the best move for 6 piles of 6 pieces in an efficient timeframe. There is simply no way it could evaluate the best move in a game such as chess with so many pieces and options of where to move in a reasonable time frame. Thus, my algorithm would not work well for a chess game
