@@ -3,62 +3,44 @@ import java.io.*;
 public class NimRunner {
 
     public static void main (String [] args){
-        System.out.println(makeRandomStates());
         ArrayList <Integer> rands = new ArrayList <> ();
-        rands.add(1);
-        rands.add(2);
-        rands = bestMove(rands, true);
-        System.out.println(rands);
+        System.out.println(runGame());
     }
-    // // // function that actually runs game/ simulates real game play
-    // public static boolean runGame(){
-    //     boolean isXTurn = false;
-    //     // make state a 2D array?
-    //     ArrayList <Integer> states = new ArrayList <> ();
-    //     states.add(1);
-    //     states.add(1);
-
-    //     // Tracking total objects in the arrayList
-    //     int totalObjects = 0;
-    //     for (int r = 0; r < states.size(); r++){
-    //         totalObjects = totalObjects + states.get(r);
-    //         }
-
-    //         // can take from one pile at a time, so iterate through each pile, see moves
-    //     int state = 2;
-    //     while(state >= 1){
-    //         if (isXTurn){
-    //             // updating state to subtract the correct number of objects
-    //             state = getXMove(state);
-    //             System.out.println("NEW STATE:" + state);
-
-    //         }
-    //         else {
-    //             state = getYMove(state); 
-    //             System.out.println("In y move, state after y moves" + state);
-    //         }
-    //         isXTurn = !isXTurn;
-    //     }
-    //     if (state == 0 && isXTurn){
-    //         return true;
-    //     }
-    //     return false;
-    // }
+    // // function that actually runs game/ simulates real game play, returns true if the computer won the game
+    public static boolean runGame(){
+        boolean isXTurn = true; // start with it being player X's (the computer's) turn
+        ArrayList <Integer> states = new ArrayList <> (); // generate random game board
+        while(!states.isEmpty()){ // continue while there are still objects in states
+            if (isXTurn){
+                states = getXMove(states); // if it is x's move, update the board to what the computer would do
+            }
+            else{
+                System.out.println("Here is the current state of the board: ");
+                System.out.println(states); // print out states so the user can see the board
+                states = getYMove(states); // if it is Y's move, let the user pick their next move
+            }
+            isXTurn = !isXTurn; // update the isXTurn variable so that the moves will alternate
+            if(states.contains(0)){
+                int indexOfEmptyPile = states.indexOf(0);
+                states.remove(indexOfEmptyPile); // remove empty piles; they're essentially not in play 
+            }
+        }
+        if (isXTurn){
+            return true; // if it would be X's turn but the board is empty, X won! return true
+        }
+        else{
+            return false; // otherwise, return false. X lost... awkward
+        }
+    }
     // function to make a board with random # of piles with random # of objects within each
     public static ArrayList <Integer> makeRandomStates(){
         ArrayList <Integer> states = new ArrayList <>();
-        for(int i = 0; i < (int)(Math.random()*15) + 1; i++){
-            states.add((int) (Math.random() * 15 ) + 1); // adding pile of random size
+        int numPiles = (int)(Math.random()*5) + 1;
+        for(int i = 0; i < numPiles; i++){
+            states.add((int) (Math.random() * 5 ) + 1); // adding pile of random size
         }
         return states;
     }
-
-    // // function to return the total amount of objects in a game with multiple piles
-    // public static int getTotalObjects(ArrayList <Integer> states){
-    //     for(int r = 0; r < states.size(); r++){
-
-    //     }
-    // }
 
     // figure out where X will move, computer is player X so should be ideal move
         // returns the new state of the board after this move is made
@@ -120,9 +102,9 @@ public class NimRunner {
                 }
             }
         }
-        // honestly I'm confused on why this would even work
+
         if (myTurn){
-            return -1; // 
+            return -1; // if it's your turn and you never reached 1, return -1
         }
         else{
             return 1; // 
@@ -159,10 +141,12 @@ public class NimRunner {
         }
         // if you get to this point, there essentially is no "best move" because you can't win, make whatever move is possible and continue
         for(int i = 0; i < states.size(); i ++){
+            System.out.println("I CAN'T WIN");
             if(states.get(i) != 0){ // if there are pieces in this pile, access the pile
                 int piecesToTake = (int) (Math.random() * states.get(i)) + 1; // randomly choose an amount of pieces to take
                 int originalNumPieces = states.get(i);
                 states.set(i, (originalNumPieces - piecesToTake));
+                return states;
             }
         }
         return states; // return the updates ArrayList of states
