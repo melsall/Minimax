@@ -24,9 +24,11 @@ public class NimRunner {
             }
         }
         if (isXTurn){
+            System.out.println("You lost.");
             return true; // if it would be X's turn but the board is empty, X won! return true
         }
         else{
+            System.out.println("You won!");
             return false; // otherwise, return false. X lost... awkward
         }
     }
