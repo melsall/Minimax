@@ -3,6 +3,8 @@ import java.io.*;
 public class NimRunner {
 
     public static void main (String [] args){
+        ArrayList <Integer> rands = new ArrayList <> ();
+        System.out.println(runGame());
     }
     // // function that actually runs game/ simulates real game play, returns true if the computer won the game
     public static boolean runGame(){
@@ -51,6 +53,7 @@ public class NimRunner {
     // figure out where Y will move
     public static ArrayList <Integer> getYMove(ArrayList <Integer> states){
         boolean isValidMove = false;
+        int yMove = 0;// declaring out here so it can be used throughout the function
         while(!isValidMove){
             Scanner sc = new Scanner(System.in);
             System.out.println("Which pile do you want to take from?");
@@ -131,6 +134,7 @@ public class NimRunner {
         }
         // if you get to this point, there essentially is no "best move" because you can't win, make whatever move is possible and continue
         for(int i = 0; i < states.size(); i ++){
+            System.out.println("IN HERE");
             if(states.get(i) != 0){ // if there are pieces in this pile, access the pile
                 int piecesToTake = (int) (Math.random() * states.get(i)) + 1; // randomly choose an amount of pieces to take
                 int originalNumPieces = states.get(i);
