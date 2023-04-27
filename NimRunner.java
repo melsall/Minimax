@@ -8,8 +8,8 @@ public class NimRunner {
     }
     // // function that actually runs game/ simulates real game play, returns true if the computer won the game
     public static boolean runGame(){
-        boolean isXTurn = true; // start with it being player X's (the computer's) turn
-        ArrayList <Integer> states = new ArrayList <> (); // generate random game board
+        boolean isXTurn = false; // start with it being player X's (the computer's) turn
+        ArrayList <Integer> states = makeRandomStates(); // generate random game board
         while(!states.isEmpty()){ // continue while there are still objects in states
             if (isXTurn){
                 states = getXMove(states); // if it is x's move, update the board to what the computer would do
@@ -26,18 +26,20 @@ public class NimRunner {
             }
         }
         if (isXTurn){
+            System.out.println("You lost!");
             return true; // if it would be X's turn but the board is empty, X won! return true
         }
         else{
+            System.out.println("You won!");
             return false; // otherwise, return false. X lost... awkward
         }
     }
     // function to make a board with random # of piles with random # of objects within each
     public static ArrayList <Integer> makeRandomStates(){
         ArrayList <Integer> states = new ArrayList <>();
-        int numPiles = (int)(Math.random()*5) + 1;
+        int numPiles = (int)(Math.random()* 5) + 1;
         for(int i = 0; i < numPiles; i++){
-            states.add((int) (Math.random() * 5 ) + 1); // adding pile of random size
+            states.add((int) (Math.random() * 5) + 1); // adding pile of random size
         }
         return states;
     }
@@ -74,7 +76,7 @@ public class NimRunner {
     // Minimax Function
     public static int minimax(ArrayList <Integer> states, boolean myTurn){
         //base case (there are no objects in any of the piles)
-        if (isBaseCase(states)){
+        if (states.isEmpty()){
             if (myTurn){
                 return 1; // if it is my turn and the state is 0, I won
             }
@@ -110,15 +112,6 @@ public class NimRunner {
             return 1; // 
         }
     }
-    // helper function to see if it is the base case for minimax, returns true if it is the base case
-    public static boolean isBaseCase(ArrayList <Integer> states){
-        for(int i = 0; i < states.size(); i++){
-            if(states.get(i) != 0){
-                return false; // if one of the piles have more than 0 objects, it is not the base case
-            }
-        }
-        return true; // if you have iterated through the whole for loop and all of the piles have 0, it is the base case
-    }
     
     // Best Move Function: 
     // returns new state of the piles after utilizing the best move function
@@ -141,7 +134,6 @@ public class NimRunner {
         }
         // if you get to this point, there essentially is no "best move" because you can't win, make whatever move is possible and continue
         for(int i = 0; i < states.size(); i ++){
-            System.out.println("I CAN'T WIN");
             if(states.get(i) != 0){ // if there are pieces in this pile, access the pile
                 int piecesToTake = (int) (Math.random() * states.get(i)) + 1; // randomly choose an amount of pieces to take
                 int originalNumPieces = states.get(i);
